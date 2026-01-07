@@ -37,3 +37,7 @@ unit-test/
 - Java
 - JUnit 5
 - Git & GitHub
+
+- ## 7. Kết quả kiểm thử
+
+![Kết quả chạy kiểm thử JUnit](image/test.jpg)
