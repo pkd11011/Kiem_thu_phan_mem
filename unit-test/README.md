@@ -1,43 +1,35 @@
-# Bài thực hành kiểm thử với JUnit
+# Bài thực hành kiểm thử đơn vị với JUnit 5
 
-## 1. Mục tiêu
-- Viết kiểm thử đơn vị bằng JUnit 5
-- Áp dụng kiểm tra dữ liệu đầu vào (validate)
-- Sử dụng GitHub Issues và commit message chuẩn
+Dự án này tập trung vào việc hướng dẫn triển khai kiểm thử đơn vị (Unit Test), cách xử lý logic nghiệp vụ và áp dụng quy trình làm việc chuẩn hóa trên GitHub.
+
+## 1. Mục tiêu bài học
+
+* **Kiểm thử đơn vị**: Làm quen và sử dụng thành thạo JUnit 5.
+* **Xử lý dữ liệu**: Áp dụng kỹ thuật kiểm tra và lọc dữ liệu đầu vào (Validation).
+* **Quy trình làm việc**: Sử dụng GitHub Issues và quản lý mã nguồn bằng commit message chuẩn.
 
 ## 2. Mô tả bài toán
-Xây dựng lớp `StudentAnalyzer` để phân tích điểm số học sinh:
-- Đếm số học sinh đạt loại Giỏi (>= 8.0)
-- Tính điểm trung bình của các điểm hợp lệ (từ 0 đến 10)
-- Bỏ qua các giá trị không hợp lệ (<0 hoặc >10)
+
+Thực hiện xây dựng lớp `StudentAnalyzer` để phân tích danh sách điểm số của học sinh với các yêu cầu sau:
+
+* **Phân loại**: Xác định số lượng học sinh đạt loại Giỏi (điểm số $\ge 8.0$).
+* **Tính toán**: Tính toán giá trị trung bình cộng từ danh sách điểm hợp lệ.
+* **Ràng buộc dữ liệu**:
+    * Điểm hợp lệ: Nằm trong khoảng $[0, 10]$.
+    * Điểm không hợp lệ: Các giá trị $< 0$ hoặc $> 10$ sẽ bị loại bỏ khỏi quá trình tính toán.
 
 ## 3. Cấu trúc thư mục
+
+```text
 unit-test/
 ├── src/
-│ └── StudentAnalyzer.java
+│   └── StudentAnalyzer.java       # Chứa logic xử lý chính
 ├── test/
-│ └── StudentAnalyzerTest.java
-└── README.md
+│   └── StudentAnalyzerTest.java   # Chứa các kịch bản kiểm thử
+└── README.md                      # Tài liệu hướng dẫn dự án
 
-## 4. Cách chạy chương trình
-- Mở project bằng IntelliJ IDEA hoặc Eclipse
-- Đảm bảo đã cấu hình JDK 8 trở lên
+- ## 4. Kết quả kiểm thử
 
-## 5. Cách chạy kiểm thử đơn vị
-### Cách 1: IntelliJ IDEA
-1. Chuột phải file `StudentAnalyzerTest.java`
-2. Chọn **Run 'StudentAnalyzerTest'**
-3. Quan sát kết quả kiểm thử (PASS/FAIL)
 
-### Cách 2: Eclipse
-1. Chuột phải file test
-2. Chọn **Run As → JUnit Test**
-
-## 6. Công nghệ sử dụng
-- Java
-- JUnit 5
-- Git & GitHub
-
-- ## 7. Kết quả kiểm thử
 
 ![Kết quả chạy kiểm thử JUnit](image/test.jpg)
