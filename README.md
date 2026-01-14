@@ -1,4 +1,3 @@
-# Kiem_thu_phan_mem
 # Can't Unsee – Visual Perception Challenge Result
 ## 📌 Giới thiệu
 Website: https://cantunsee.space
