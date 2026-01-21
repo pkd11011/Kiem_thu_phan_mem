@@ -13,4 +13,4 @@ Website: https://cantunsee.space
 
 - **Tên hiển thị:** Đô  
 - **Email:** phamdo1132@gmail.com
-![Điểm số](z7399308308266_2e70a5d7b80588b17da3a3957c02678f.jpg)
+![Điểm số](cantunsee.jpg)
