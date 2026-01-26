@@ -37,6 +37,22 @@ Xây dựng và kiểm thử lớp xử lý điểm số StudentAnalyzer với c
 - Biên 0 và 10 được chấp nhận; 10.1 bị loại.
 - Tập dữ liệu toàn giá trị không hợp lệ trả về 0.0.
 
+### Bảng quyết định
+| Trạng thái input | Trong 0–10 | Trong 8–10 | Ảnh hưởng trung bình (`calculateValidAverage`) | Đếm giỏi (`countExcellentStudents`) |
+|------------------|------------|------------|-----------------------------------------------|--------------------------------------|
+| null             | –          | –          | Bỏ qua                                        | Bỏ qua                               |
+| < 0              | Không      | Không      | Bỏ qua                                        | Bỏ qua                               |
+| > 10             | Không      | Không      | Bỏ qua                                        | Bỏ qua                               |
+| 0 ≤ điểm < 8     | Có         | Không      | Tính vào trung bình                          | Bỏ qua                               |
+| 8 ≤ điểm ≤ 10    | Có         | Có         | Tính vào trung bình                          | Tăng bộ đếm (giỏi)                   |
+
+| Trạng thái danh sách           | Kết quả `calculateValidAverage` | Kết quả `countExcellentStudents` |
+|--------------------------------|---------------------------------|-----------------------------------|
+| `scores == null`               | 0.0                             | 0                                 |
+| Rỗng                           | 0.0                             | 0                                 |
+| Chỉ null/ngoài 0–10            | 0.0                             | 0                                 |
+| Có ít nhất một điểm hợp lệ     | Trung bình điểm hợp lệ          | Số lượng điểm trong [8,10]        |
+
 ### Cách chạy
 - Mở thư mục unit-test và chạy bộ kiểm thử JUnit 5 bằng IDE (IntelliJ/Eclipse) hoặc lệnh `mvn test`/`gradle test` nếu đã cấu hình công cụ build tương ứng.
 
