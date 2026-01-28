@@ -1,78 +1,136 @@
-# Software Testing
+# Tài liệu dự án kiểm thử
 
 ## Mục lục
-1. [Mục tiêu](#mục-tiêu)
-2. [Tổng quan dự án](#tổng-quan-dự-án)
-3. [Báo cáo kết quả](#báo-cáo-kết-quả-test-report)
-4. [Tư duy Kiểm thử](#tư-duy-kiểm-thử-testing-mindset)
-5. [Kiểm thử E2E với Cypress](#kiểm-thử-e2e-với-cypress)
+1. [Giới thiệu chung](#giới-thiệu-chung)
+2. [Chương 1 — Pixel Perfect với Can't Unsee](#chương-1--pixel-perfect-với-cant-unsee)
+3. [Chương 2 — Kiểm thử đơn vị (JUnit)](#chương-2--kiểm-thử-đơn-vị-junit)
+4. [Chương 3 — Kiểm thử E2E với Cypress](#chương-3--kiểm-thử-e2e-với-cypress)
+5. [Chương 4 — Kiểm thử hiệu năng với JMeter](#chương-4--kiểm-thử-hiệu-năng-với-jmeter)
 6. [Thông tin người thực hiện](#thông-tin-người-thực-hiện)
 
-## Mục tiêu
-* Rèn luyện khả năng quan sát sai lệch giao diện (Pixel Perfect) qua thử thách Can't Unsee.
-* Xây dựng và chạy bộ kiểm thử E2E bằng Cypress cho luồng mua hàng trên SauceDemo.
+## Giới thiệu chung
+Bộ bài tập rèn luyện tư duy kiểm thử qua bốn chương độc lập:
+- Chương 1: Quan sát sai lệch giao diện (Pixel Perfect) qua thử thách Can't Unsee.
+- Chương 2: Luyện JUnit với bài toán phân tích điểm số học sinh.
+- Chương 3: Viết và chạy kịch bản E2E Cypress trên trang https://www.saucedemo.com.
+- Chương 4: Kiểm thử hiệu năng (Performance Testing) với Apache JMeter.
 
-## Tổng quan dự án
-Nằm trong khuôn khổ **Chapter 1: Testing Principles**, thử thách này đóng vai trò là bài kiểm tra đầu vào về khả năng quan sát chi tiết (**Pixel Perfect**) của một kiểm thử viên. Mục tiêu cốt lõi là rèn luyện tư duy nhạy bén trong việc phát hiện các lỗi sai lệch giao diện (UI Defect) so với bản thiết kế chuẩn (Design System).
+## Chương 1 — Pixel Perfect với Can't Unsee
+- Nền tảng: https://cantunsee.space.
+- Kỹ năng rèn luyện: độ tương phản, kiểu chữ, căn lề và khoảng cách.
+- Kết quả: đạt hạng Platinum (Top 5%).
+- Minh chứng: ![Chứng chỉ Can't Unsee Platinum](cantunsee.jpg)
 
-* **Nền tảng thực hiện:** [Can't Unsee](https://cantunsee.space)
-* **Kỹ năng rèn luyện:** * **Contrast:** Phân tích độ tương phản màu sắc.
-    * **Typography:** Nhận diện sự khác biệt về font-weight, size và spacing.
-    * **Alignment & Padding:** Kiểm tra tính chính xác của khoảng cách và căn lề.
+## Chương 2 — Kiểm thử đơn vị (JUnit)
+### Mục tiêu
+Xây dựng và kiểm thử lớp xử lý điểm số StudentAnalyzer với các quy tắc bỏ qua dữ liệu không hợp lệ.
 
----
+### Mã nguồn
+- Logic: [unit-test/src/StudentAnalyzer.java](unit-test/src/StudentAnalyzer.java)
+- Kiểm thử JUnit 5: [unit-test/test/StudentAnalyzerTest.java](unit-test/test/StudentAnalyzerTest.java)
 
-## Báo cáo kết quả (Test Report)
+### Chức năng chính
+- `countExcellentStudents(List<Double>)`: đếm điểm trong khoảng 8.0–10.0, bỏ qua null và giá trị ngoài miền hợp lệ.
+- `calculateValidAverage(List<Double>)`: tính trung bình các điểm hợp lệ 0.0–10.0, trả về 0.0 nếu danh sách rỗng hoặc null.
 
-Tôi đã hoàn thành thử thách với kết quả thuộc nhóm xuất sắc, khẳng định năng lực quan sát ở mức độ chuyên sâu:
+### Kịch bản kiểm thử
+- Dữ liệu hợp lệ ảnh hưởng đúng đến trung bình.
+- Loại bỏ giá trị nhỏ hơn 0 hoặc lớn hơn 10 và phần tử null.
+- Biên 0 và 10 được chấp nhận; 10.1 bị loại.
+- Tập dữ liệu toàn giá trị không hợp lệ trả về 0.0.
 
-* **Xếp hạng:** <kbd>Platinum</kbd> (Top 5% người chơi toàn cầu).
-* **Đặc điểm nhận diện:** * Khả năng phát hiện sai lệch cực nhỏ (chênh lệch 1-2px).
-    * Tốc độ phản xạ và đưa ra quyết định dựa trên quy chuẩn UI/UX.
-    * Tập trung cao độ trong các kịch bản so sánh phức tạp.
+### Bảng quyết định
+| Trạng thái input | Trong 0–10 | Trong 8–10 | Ảnh hưởng trung bình (`calculateValidAverage`) | Đếm giỏi (`countExcellentStudents`) |
+|------------------|------------|------------|-----------------------------------------------|--------------------------------------|
+| null             | –          | –          | Bỏ qua                                        | Bỏ qua                               |
+| < 0              | Không      | Không      | Bỏ qua                                        | Bỏ qua                               |
+| > 10             | Không      | Không      | Bỏ qua                                        | Bỏ qua                               |
+| 0 ≤ điểm < 8     | Có         | Không      | Tính vào trung bình                          | Bỏ qua                               |
+| 8 ≤ điểm ≤ 10    | Có         | Có         | Tính vào trung bình                          | Tăng bộ đếm (giỏi)                   |
 
-> [!TIP]
-> **Minh chứng kết quả:**
-> ![Kết quả Cant Unsee](cantunsee.jpg)
-> *Hình 1: Chứng chỉ hoàn thành cấp độ Platinum - Visual Perception.*
+| Trạng thái danh sách           | Kết quả `calculateValidAverage` | Kết quả `countExcellentStudents` |
+|--------------------------------|---------------------------------|-----------------------------------|
+| `scores == null`               | 0.0                             | 0                                 |
+| Rỗng                           | 0.0                             | 0                                 |
+| Chỉ null/ngoài 0–10            | 0.0                             | 0                                 |
+| Có ít nhất một điểm hợp lệ     | Trung bình điểm hợp lệ          | Số lượng điểm trong [8,10]        |
 
----
+### Cách chạy
+- Mở thư mục unit-test và chạy bộ kiểm thử JUnit 5 bằng IDE (IntelliJ/Eclipse) hoặc lệnh `mvn test`/`gradle test` nếu đã cấu hình công cụ build tương ứng.
 
-## Tư duy Kiểm thử (Testing Mindset)
+## Chương 3 — Kiểm thử E2E với Cypress
+### Cấu trúc thư mục
+- Cấu hình: [cypress-exercise/cypress.config.js](cypress-exercise/cypress.config.js)
+- Kịch bản: [cypress-exercise/cypress/e2e/login_spec.cy.js](cypress-exercise/cypress/e2e/login_spec.cy.js), [cypress-exercise/cypress/e2e/workflow.cy.js](cypress-exercise/cypress/e2e/workflow.cy.js)
+- Dữ liệu mẫu và hỗ trợ: [cypress-exercise/cypress/fixtures/example.json](cypress-exercise/cypress/fixtures/example.json), [cypress-exercise/cypress/support/e2e.js](cypress-exercise/cypress/support/e2e.js), [cypress-exercise/cypress/support/commands.js](cypress-exercise/cypress/support/commands.js)
 
-Thông qua thử thách này, tôi đã đúc kết và áp dụng các tiêu chuẩn "vàng" vào quy trình kiểm thử giao diện thực tế:
-
-1.  **Tính nhất quán (Consistency):** Đảm bảo các thành phần (Icons, Buttons, Radius) đồng nhất trên toàn bộ hệ thống.
-2.  **Độ chính xác về khoảng cách (Space & Grid):** Áp dụng quy tắc 4px/8px để kiểm tra Padding và Margin, tránh tình trạng "lệch mắt" gây khó chịu cho người dùng.
-3.  **Khả năng truy cập (Accessibility):** Luôn đặt câu hỏi về độ tương phản của Text so với Background để đảm bảo tính dễ đọc theo chuẩn WCAG.
-
----
-
-## Kiểm thử E2E với Cypress
-
-* **Mục tiêu:** Tự động hóa các kịch bản mua hàng trên https://www.saucedemo.com để kiểm thử luồng chính (happy path) và lỗi đăng nhập.
-* **Môi trường:** Node.js 18+, Cypress 15.9.0 (cấu hình tại thư mục `cypress-exercise`).
-
-### Cài đặt & chạy nhanh
+### Thiết lập môi trường
 1. `cd cypress-exercise`
 2. `npm install`
-3. Chạy giao diện: `npx cypress open --e2e`
-4. Chạy headless: `npx cypress run --spec "cypress/e2e/**/*.cy.js"`
+
+### Chạy kiểm thử
+- Giao diện: `npx cypress open --e2e`
+- Chế độ không giao diện: `npx cypress run --spec "cypress/e2e/**/*.cy.js"`
 
 ### Phạm vi kịch bản
-* **TC01:** Đăng nhập chuẩn (`standard_user/secret_sauce`) và được điều hướng tới `/inventory.html`.
-* **TC02:** Đăng nhập sai thông tin, hiển thị banner lỗi đỏ với nội dung cảnh báo.
-* **TC03:** Thêm sản phẩm đầu tiên vào giỏ, kiểm tra badge = 1, sau đó xóa và badge biến mất.
-* **TC04:** Thêm sản phẩm → giỏ hàng → checkout; điền thông tin (First/Last/Zip) và tới bước `checkout-step-two.html`.
+- TC01: Đăng nhập với tài khoản chuẩn `standard_user/secret_sauce`, chuyển tới `/inventory.html`.
+- TC02: Đăng nhập sai, hiển thị banner lỗi.
+- TC03: Thêm sản phẩm đầu tiên, huy hiệu giỏ = 1; xóa sản phẩm, huy hiệu biến mất.
+- TC04: Thêm hàng -> giỏ -> checkout, nhập First/Last/Zip, tới `/checkout-step-two.html`.
 
-> Lưu ý: `cypress.config.js` đã tăng timeout (command/request/response = 10s, page load = 30s) và thiết lập viewport 1280x720 để ổn định khi chạy CI.
+### Lưu ý cấu hình
+- Thời gian chờ command/request/response: 10s; tải trang: 30s.
+- Kích thước viewport: 1280x720; `numTestsKeptInMemory` đặt 0 để giảm lưu trữ log.
 
----
+## Chương 4 — Kiểm thử hiệu năng với JMeter
+### Mục tiêu
+Đánh giá khả năng chịu tải, thời gian phản hồi và độ ổn định của hệ thống dưới áp lực người dùng đồng thời.
+
+### Công cụ
+- Apache JMeter (phiên bản 5.x trở lên)
+- Thư mục cấu hình: [JMeter/](JMeter/)
+
+### Kịch bản kiểm thử
+- **Load Testing**: Mô phỏng số lượng người dùng tăng dần để xác định ngưỡng chịu tải tối đa.
+- **Stress Testing**: Đẩy hệ thống lên giới hạn để phát hiện điểm gãy (breaking point).
+- **Spike Testing**: Kiểm tra phản ứng của hệ thống khi có lượng truy cập tăng đột ngột.
+- **Endurance Testing**: Chạy thử nghiệm kéo dài để phát hiện rò rỉ bộ nhớ hoặc giảm hiệu năng theo thời gian.
+
+### Các chỉ số đo lường
+- **Response Time**: Thời gian phản hồi trung bình, min, max
+- **Throughput**: Số lượng request/giây mà server xử lý được
+- **Error Rate**: Tỷ lệ phần trăm request bị lỗi
+- **Latency**: Độ trễ mạng
+
+### Cách chạy
+1. Mở Apache JMeter:
+   ```bash
+   jmeter
+   ```
+2. Load file kịch bản `.jmx` từ thư mục [JMeter/](JMeter/)
+3. Cấu hình số lượng threads (người dùng ảo) và thời gian ramp-up
+4. Chạy test và theo dõi kết quả qua các Listener (Graph Results, Summary Report, View Results Tree)
+
+### Kết quả kiểm thử
+
+**Báo cáo tổng hợp (Summary Report):**
+
+![Summary Report](JMeter/summary%20report.png)
+
+**Kết quả chi tiết (View Results Tree):**
+
+![View Result](JMeter/view%20result.png)
+
+![View Result Detail](JMeter/view%20result_01.png)
+
+**Phân tích:**
+- Hệ thống đã được kiểm thử với các kịch bản tải khác nhau
+- Các chỉ số hiệu năng chi tiết được thể hiện trong các báo cáo trên
+- Kết quả cho thấy khả năng xử lý và thời gian phản hồi của hệ thống dưới áp lực
 
 ## Thông tin người thực hiện
-* **Họ và tên:** Phạm Khắc Đô
-* **Mã sinh viên:** BCS230024
-* **Email:** phamdo1132@gmail.com
+- Họ và tên: Phạm Khắc Đô
+- Mã sinh viên: BCS230024
+- Email: phamdo1132@gmail.com
 
----
-*Last updated: January 21, 2026*
+*Cập nhật lần cuối: 26/01/2026*

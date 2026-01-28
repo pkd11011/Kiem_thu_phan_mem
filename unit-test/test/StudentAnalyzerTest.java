@@ -17,11 +17,6 @@ public class StudentAnalyzerTest {
     void setUp() {
         analyzer = new StudentAnalyzer();
     }
-
-    /**
-     * Helper method: Parse semicolon-separated scores into List<Double>
-     * Tránh lặp code và giúp dễ bảo trì
-     */
     private List<Double> parseScores(String scoreString) {
         List<Double> scoreList = new ArrayList<>();
         String[] scoreStrings = scoreString.split(";");
