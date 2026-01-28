@@ -59,6 +59,7 @@ Xây dựng và kiểm thử lớp xử lý điểm số StudentAnalyzer với c
 - Mở thư mục unit-test và chạy bộ kiểm thử JUnit 5 bằng IDE (IntelliJ/Eclipse) hoặc lệnh `mvn test`/`gradle test` nếu đã cấu hình công cụ build tương ứng.
 
 ## Chương 3 — Kiểm thử E2E với Cypress
+
 ### Cấu trúc thư mục
 - Cấu hình: [cypress-exercise/cypress.config.js](cypress-exercise/cypress.config.js)
 - Kịch bản: [cypress-exercise/cypress/e2e/login_spec.cy.js](cypress-exercise/cypress/e2e/login_spec.cy.js), [cypress-exercise/cypress/e2e/workflow.cy.js](cypress-exercise/cypress/e2e/workflow.cy.js)
@@ -85,7 +86,7 @@ Xây dựng và kiểm thử lớp xử lý điểm số StudentAnalyzer với c
 ## Chương 4 — Kiểm thử hiệu năng với JMeter
 ### Mục tiêu
 Đánh giá khả năng chịu tải, thời gian phản hồi và độ ổn định của hệ thống dưới áp lực người dùng đồng thời.
-
+8
 ### Công cụ
 - Apache JMeter (phiên bản 5.x trở lên)
 - Thư mục cấu hình: [JMeter/](JMeter/)
